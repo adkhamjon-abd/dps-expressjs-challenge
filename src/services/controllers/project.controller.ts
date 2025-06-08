@@ -3,8 +3,9 @@ import db from '../db.service';
 
 //GET ALL
 const getAllProjects = (req: Request, res: Response) => {
-	res.send('Some data');
-	res;
+	const projects = db.query('SELECT * FROM projects');
+
+	res.json(projects);
 };
 
 //GET (id)
