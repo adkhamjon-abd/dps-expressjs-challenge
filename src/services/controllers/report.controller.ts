@@ -41,4 +41,16 @@ const updateReport = (req: Request, res: Response) => {
 	res.json(responseReport[0]);
 };
 
-export default { getReportById, updateReport };
+const deleteReport = (req: Request, res: Response) => {
+	const id = Number(req.params.id);
+
+	const deletedReport = db.run('DELETE from reports WHERE id=:id', { id });
+
+	if (deletedReport.changes === 0) {
+		return res.status(404).json({ message: 'Report not found' });
+	}
+
+	return res.status(200).json({ message: 'Report deleted successfully' });
+};
+
+export default { getReportById, updateReport, deleteReport };
