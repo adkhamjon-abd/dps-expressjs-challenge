@@ -53,4 +53,25 @@ const deleteReport = (req: Request, res: Response) => {
 	return res.status(200).json({ message: 'Report deleted successfully' });
 };
 
-export default { getReportById, updateReport, deleteReport };
+const getReportByProjectId = (req: Request, res: Response) => {
+	const projectId = Number(req.params.projectId);
+	console.log(projectId);
+	const report = db.query(
+		'SELECT * FROM reports WHERE projectid=:projectId',
+		{ projectId },
+	);
+	console.log('DB project:', report);
+
+	if (report.length === 0) {
+		return res.status(404).json({ message: 'Report not found' });
+	}
+
+	res.json(report);
+};
+
+export default {
+	getReportById,
+	updateReport,
+	deleteReport,
+	getReportByProjectId,
+};
