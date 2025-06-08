@@ -39,4 +39,30 @@ const createProject = (req: Request, res: Response) => {
 
 	res.status(201).json(newProject[0]);
 };
-export default { getAllProjects, getProjectById, createProject };
+
+const updateProject = (req: Request, res: Response) => {
+	const id = Number(req.params.id);
+	const { name, description } = req.body;
+
+	if (!name || !description) {
+		return res
+			.status(400)
+			.json({ message: 'Name or description are not found' });
+	}
+
+	const updatedProject = db.run(
+		'UPDATE projects SET name=:name, description=:description WHERE id=:id',
+		{ name, description, id },
+	);
+
+	if (updatedProject.changes === 0) {
+		return res.status(404).json({ message: 'Project not found' });
+	}
+
+	const responseProject = db.query('SELECT * FROM projects WHERE id = :id', {
+		id,
+	});
+
+	res.status(200).json(responseProject[0]);
+};
+export default { getAllProjects, getProjectById, createProject, updateProject };
