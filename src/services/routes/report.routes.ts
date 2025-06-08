@@ -10,4 +10,6 @@ router.put('/:id', reportController.updateReport);
 router.delete('/:id', reportController.deleteReport);
 
 router.get('/', reportController.getReportByProjectId);
+
+router.post('/', reportController.addReportByProjectId);
 export default router;

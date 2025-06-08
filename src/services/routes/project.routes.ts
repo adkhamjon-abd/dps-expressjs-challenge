@@ -16,4 +16,5 @@ router.delete('/:id', projectController.deleteProject);
 
 //Routing to report controller
 router.use('/:projectId/reports', reportRoutes);
+router.use('/:projectId/reports', reportRoutes);
 export default router;

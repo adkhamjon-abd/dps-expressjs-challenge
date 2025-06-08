@@ -69,9 +69,30 @@ const getReportByProjectId = (req: Request, res: Response) => {
 	res.json(report);
 };
 
+const addReportByProjectId = (req: Request, res: Response) => {
+	const projectId = Number(req.params.projectId);
+
+	const { text } = req.body;
+
+	if (!text) {
+		return res.status(400).json({ message: 'Text is not found' });
+	}
+
+	const addReport = db.run(
+		'INSERT INTO reports (text, projectid) VALUES (:text, :projectId)',
+		{ text, projectId },
+	);
+
+	const createdReport = db.query('SELECT * FROM reports WHERE id=:id', {
+		id: Number(addReport.lastInsertRowid),
+	});
+
+	res.status(201).json(createdReport[0]);
+};
 export default {
 	getReportById,
 	updateReport,
 	deleteReport,
 	getReportByProjectId,
+	addReportByProjectId,
 };
