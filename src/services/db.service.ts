@@ -5,6 +5,9 @@ const db = new sqlite(path.resolve('./db/db.sqlite3'), {
 	fileMustExist: true,
 });
 
+//Foreign key contraints
+db.pragma('foreign_keys = ON');
+
 function query(
 	sql: string,
 	params?: { [key: string]: string | number | undefined },
