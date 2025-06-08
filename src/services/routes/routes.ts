@@ -7,7 +7,7 @@ router.get('/', projectController.getAllProjects);
 
 router.get('/:id', projectController.getProjectById);
 
-//router.post('/', createProject);
+router.post('/', projectController.createProject);
 
 //router.put('/:id', updateProject);
 
