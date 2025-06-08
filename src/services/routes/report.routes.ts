@@ -1,8 +1,10 @@
 import express from 'express';
-import getReportById from '../controllers/report.controller';
+import reportController from '../controllers/report.controller';
 
 const router = express.Router();
 
-router.get('/:id', getReportById);
+router.get('/:id', reportController.getReportById);
+
+router.put('/:id', reportController.updateReport);
 
 export default router;
