@@ -11,6 +11,6 @@ router.post('/', projectController.createProject);
 
 router.put('/:id', projectController.updateProject);
 
-//router.delete('/:id', deleteProject);
+router.delete('/:id', projectController.deleteProject);
 
 export default router;
