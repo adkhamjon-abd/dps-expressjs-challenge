@@ -89,10 +89,54 @@ const addReportByProjectId = (req: Request, res: Response) => {
 
 	res.status(201).json(createdReport[0]);
 };
+
+const countWords = async (req: Request, res: Response) => {
+	const word = req.query.word as string;
+	const filteredReports: { id: number; text: string; projectid: number }[] =
+		[];
+
+	if (!word || word.length === 0) {
+		return res
+			.status(404)
+			.json({ message: 'Query param "word" is required' });
+	}
+
+	const result = await db.query('SELECT * from reports');
+	const reports = result as { id: number; text: string; projectid: number }[];
+
+	function escapeRegex(s: string): string {
+		return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+	}
+
+	const safeWord = escapeRegex(word);
+	const regex = new RegExp(`\\b${safeWord}\\b`, 'gi');
+
+	let count: number;
+	for (const report of reports) {
+		const matches = report.text.match(regex);
+		if (matches) {
+			count = matches.length;
+		} else {
+			count = 0;
+		}
+		//console.log(`Found ${count} matches in:`, report.text);
+
+		if (count >= 3) {
+			filteredReports.push({
+				id: report.id,
+				text: report.text,
+				projectid: report.projectid,
+			});
+		}
+	}
+
+	return res.status(200).json(filteredReports);
+};
 export default {
 	getReportById,
 	updateReport,
 	deleteReport,
 	getReportByProjectId,
 	addReportByProjectId,
+	countWords,
 };

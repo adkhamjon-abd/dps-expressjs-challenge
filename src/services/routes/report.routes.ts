@@ -3,6 +3,8 @@ import reportController from '../controllers/report.controller';
 
 const router = express.Router({ mergeParams: true });
 
+router.get('/frequent-words', reportController.countWords);
+
 router.get('/:id', reportController.getReportById);
 
 router.put('/:id', reportController.updateReport);
